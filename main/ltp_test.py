@@ -56,6 +56,7 @@ def LTP_ne(sentence):
 
     return seg_list, pos_list, ner_list
 
+
 # 传入一个句子，返回一个带空格的字符串
 def sentence_split(sentence):
     t0 = time.time()
@@ -75,6 +76,7 @@ def sentence_split(sentence):
     print '*arc:', arc
     print '*ner:', ner
     print "——————————"
+
 
 if __name__ == '__main__':
     sentence_split("我觉得你说的，可能存在问题，你觉得呢？")

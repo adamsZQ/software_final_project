@@ -12,7 +12,7 @@ from ltp_test import sentence_split, get_stop_words
 
 app = Flask(__name__)
 storeDir = 'qNa'
-analyzer = WhitespaceAnalyzer(Version.LUCENE_CURRENT)
+#analyzer = WhitespaceAnalyzer(Version.LUCENE_CURRENT)
 stop_words = get_stop_words()
 
 
@@ -64,7 +64,7 @@ def fuzzy_matching(question):
 
     # 开始查询
     query = QueryParser(Version.LUCENE_CURRENT, "question",
-                        analyzer).parse(question)
+                        WhitespaceAnalyzer(Version.LUCENE_CURRENT)).parse(question)
     scoreDocs = searcher.search(query, 1).scoreDocs
     if len(scoreDocs) < 1:
         return 'failure'

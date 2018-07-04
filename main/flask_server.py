@@ -68,7 +68,7 @@ def fuzzy_matching(question):
     question = sentence_split(question)
 
     # 构建查找器
-    directory = SimpleFSDirectory(File("qNa"))
+    directory = SimpleFSDirectory(File(storeDir))
     searcher = IndexSearcher(directory, True)
 
     # 开始查询

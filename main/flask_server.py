@@ -23,6 +23,9 @@ def chat_teaching(data):
     question = data_json['question']
     answer = data_json['answer']
 
+    question = question.decode('utf-8').strip()
+    answer = answer.decode('utf-8').strip()
+
     # 问题分词， 答案不分词
     question = sentence_split(question)
     # answer = sentence_split(answer)
@@ -35,8 +38,6 @@ def chat_teaching(data):
     writer.setMaxFieldLength(1048576)
 
     # 存入lucene库
-    question = question.decode('utf-8').strip()
-    answer = answer.decode('utf-8').strip()
     try:
         doc = Document()
         doc.add(Field("id", str(uuid.uuid1()),

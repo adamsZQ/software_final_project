@@ -6,14 +6,14 @@ import os
 from flask import Flask
 import json
 import lucene
-from lucene import VERSION, initVM, Version, WhitespaceAnalyzer, QueryParser, IndexSearcher, SimpleFSDirectory, File, getVMEnv
+#from lucene import VERSION, initVM, Version, WhitespaceAnalyzer, QueryParser, IndexSearcher, SimpleFSDirectory, File, getVMEnv
 import uuid
 
 from ltp_test import sentence_split, get_stop_words
 
 app = Flask(__name__)
 storeDir = 'qNa'
-analyzer = WhitespaceAnalyzer(Version.LUCENE_CURRENT)
+analyzer = lucene.WhitespaceAnalyzer(lucene.Version.LUCENE_CURRENT)
 stop_words = get_stop_words()
 
 
@@ -60,11 +60,11 @@ def fuzzy_matching(question):
     question = sentence_split(question)
 
     # 构建查找器
-    directory = SimpleFSDirectory(File("qNa"))
-    searcher = IndexSearcher(directory, True)
+    directory = lucene.SimpleFSDirectory(lucene.File("qNa"))
+    searcher = lucene.IndexSearcher(directory, True)
 
     # 开始查询
-    query = QueryParser(Version.LUCENE_CURRENT, "question",
+    query = lucene.QueryParser(lucene.Version.LUCENE_CURRENT, "question",
                         analyzer).parse(question)
     scoreDocs = searcher.search(query, 1).scoreDocs
     if len(scoreDocs) < 1:

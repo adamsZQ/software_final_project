@@ -20,8 +20,8 @@ stop_words = get_stop_words()
 def chat_teaching(data):
     # 通过json获得问题和答案
     data_json = json.loads(data)
-    question = data_json('question')
-    answer = data_json('answer')
+    question = data_json['question']
+    answer = data_json['answer']
 
     # 问题分词， 答案不分词
     question = sentence_split(question)

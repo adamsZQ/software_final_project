@@ -11,7 +11,7 @@ import uuid
 from ltp_test import sentence_split, get_stop_words
 
 app = Flask(__name__)
-storeDir = 'qNa'
+storeDir = 'qNa2'
 #analyzer = WhitespaceAnalyzer(Version.LUCENE_CURRENT)
 stop_words = get_stop_words()
 
@@ -37,7 +37,7 @@ def chat_teaching(data):
     if not os.path.exists(storeDir):
         os.mkdir(storeDir)
     store = SimpleFSDirectory(File(storeDir))
-    writer = IndexWriter(store, WhitespaceAnalyzer(Version.LUCENE_CURRENT),
+    writer = IndexWriter(store, WhitespaceAnalyzer(Version.LUCENE_CURRENT),True,
                                      IndexWriter.MaxFieldLength.LIMITED)
     writer.setMaxFieldLength(1048576)
 
@@ -58,6 +58,8 @@ def chat_teaching(data):
         writer.addDocument(doc)
     except Exception, e:
         print e
+    writer.optimize()
+    writer.close()
 
 
 @app.route('/fuzzyMatching/<string:question>')

@@ -100,6 +100,8 @@ def sentence_split(sentence):
     print '*ner:', ner
     print "——————————"
 
+    return seg
+
 
 if __name__ == '__main__':
     sentence_split("我觉得你说的，可能存在问题，你觉得呢？")

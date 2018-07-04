@@ -31,7 +31,7 @@ def chat_teaching(data):
     if not os.path.exists(storeDir):
         os.mkdir(storeDir)
     store = SimpleFSDirectory(File(storeDir))
-    writer = IndexWriter(store, WhitespaceAnalyzer(Version.LUCENE_CURRENT),True,
+    writer = IndexWriter(store, WhitespaceAnalyzer(Version.LUCENE_CURRENT),
                                      IndexWriter.MaxFieldLength.LIMITED)
     writer.setMaxFieldLength(1048576)
 

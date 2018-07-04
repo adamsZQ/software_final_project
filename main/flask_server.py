@@ -23,6 +23,9 @@ def chat_teaching(data):
     question = data_json['question']
     answer = data_json['answer']
 
+    question = question.encode('utf-8')
+    answer = answer.encode('utf-8')
+
     print "question:", question
     print "answer:", answer
 

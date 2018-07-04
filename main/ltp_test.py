@@ -26,7 +26,7 @@ def punctuations_filter(sentence):
 def punctuations_filter2(sentence):
     f_words = ['?', '.', '*', '&', '？', '。', '，']
     for word in f_words:
-        #word = word.decode('utf-8')
+        word = word.decode('utf-8')
         sentence = sentence.replace(word, '')
 
     return sentence

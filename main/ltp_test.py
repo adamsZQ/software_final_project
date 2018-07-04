@@ -7,8 +7,23 @@ import urllib2
 import random
 import time
 import sys
+import re
 
 uri_base = "http://bbd.8wss.com/ltp"
+
+
+def punctuations_filter(sentence):
+    ret = re.sub("[\.\!\?\/_\{\}\[\]\(\),$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+".decode("utf8"), "".decode("utf8"), sentence)
+    return ret.strip()
+
+
+def punctuations_filter2(sentence):
+    f_words = ['?', '.', '*', '&', '？', '。', '，']
+    for word in f_words:
+        #word = word.decode('utf-8')
+        sentence = sentence.replace(word, '')
+
+    return sentence
 
 
 def LTP_dp(sentence):
@@ -59,6 +74,7 @@ def LTP_ne(sentence):
 
 # 传入一个句子，返回一个带空格的字符串
 def sentence_split(sentence):
+    sentence = punctuations_filter2(sentence)
     t0 = time.time()
     print "LTP预处理开始"
     time_LTP = time.time()

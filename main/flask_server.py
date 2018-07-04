@@ -27,6 +27,7 @@ def chat_teaching(data):
     question = sentence_split(question)
     # answer = sentence_split(answer)
 
+    initVM()
     if not os.path.exists(storeDir):
         os.mkdir(storeDir)
     store = SimpleFSDirectory(File(storeDir))
@@ -35,7 +36,6 @@ def chat_teaching(data):
     writer.setMaxFieldLength(1048576)
 
     # 存入lucene库
-    initVM()
     question = question.decode('utf-8').strip()
     answer = answer.decode('utf-8').strip()
     try:

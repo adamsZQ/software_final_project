@@ -78,5 +78,6 @@ def fuzzy_matching(question):
 
 if __name__ == '__main__':
     chat_teaching('{"question":"叽里咕噜", "answer":"叽里咕噜"}')
+    fuzzy_matching('叽里咕噜')
 
 

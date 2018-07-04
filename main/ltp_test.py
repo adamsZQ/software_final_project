@@ -80,6 +80,7 @@ def LTP_ne(sentence):
 
 # 传入一个句子，返回一个带空格的字符串
 def sentence_split(sentence):
+    sentence = sentence.encode('utf-8')
     sentence = punctuations_filter2(sentence)
     t0 = time.time()
     print "LTP预处理开始"

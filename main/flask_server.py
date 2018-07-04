@@ -23,6 +23,9 @@ def chat_teaching(data):
     question = data_json['question']
     answer = data_json['answer']
 
+    print "question:", question
+    print "answer:", answer
+
     # 问题分词， 答案不分词
     question = sentence_split(question)
     # answer = sentence_split(answer)

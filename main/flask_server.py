@@ -2,19 +2,81 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2018/7/4 下午4:31
 # @Author  : zchai
+import os
 from flask import Flask
+import json
+import lucene
+from lucene import VERSION, initVM, Version, WhitespaceAnalyzer, QueryParser, IndexSearcher, SimpleFSDirectory, File, getVMEnv
+import uuid
+
+from ltp_test import sentence_split, get_stop_words
 
 app = Flask(__name__)
+storeDir = 'qNa'
+analyzer = WhitespaceAnalyzer(Version.LUCENE_CURRENT)
+stop_words = get_stop_words()
 
 
 @app.route('/chatTeaching/<string:data>')
 def chat_teaching(data):
-    print 'aa'
-    # print path
-    # global path_data
-    # path_data = path
-    # path_json = json.loads(path_data)
-    #
-    # t = threading.Thread(target=data_receiver, args=path_json)
-    # t.start()
-    # return 'path received'
+    # 通过json获得问题和答案
+    data_json = json.loads(data)
+    question = data_json('question')
+    answer = data_json('answer')
+
+    # 问题分词， 答案不分词
+    question = sentence_split(question)
+    # answer = sentence_split(answer)
+
+    if not os.path.exists(storeDir):
+        os.mkdir(storeDir)
+    store = lucene.SimpleFSDirectory(lucene.File(storeDir))
+    writer = lucene.IndexWriter(store, lucene.WhitespaceAnalyzer(lucene.Version.LUCENE_CURRENT),True,
+                                     lucene.IndexWriter.MaxFieldLength.LIMITED)
+    writer.setMaxFieldLength(1048576)
+
+    # 存入lucene库
+    question = question.decode('utf-8').strip()
+    answer = answer.decode('utf-8').strip()
+    try:
+        doc = lucene.Document()
+        doc.add(lucene.Field("id", str(uuid.uuid1()),
+                             lucene.Field.Store.YES,
+                             lucene.Field.Index.NOT_ANALYZED))
+        doc.add(lucene.Field("question", question,
+                             lucene.Field.Store.YES,
+                             lucene.Field.Index.ANALYZED))
+        doc.add(lucene.Field("answer", answer,
+                             lucene.Field.Store.YES,
+                             lucene.Field.Index.NOT_ANALYZED))
+        writer.addDocument(doc)
+    except Exception, e:
+        print e
+
+
+@app.route('/fuzzyMatching/<string:question>')
+def fuzzy_matching(question):
+    # 分词
+    question = sentence_split(question)
+
+    # 构建查找器
+    directory = SimpleFSDirectory(File("qNa"))
+    searcher = IndexSearcher(directory, True)
+
+    # 开始查询
+    query = QueryParser(Version.LUCENE_CURRENT, "question",
+                        analyzer).parse(question)
+    scoreDocs = searcher.search(query, 1).scoreDocs
+    if len(scoreDocs) < 1:
+        return 'failure'
+
+    doc = searcher.doc(scoreDocs[0].doc)
+    reply = doc.get("answer")
+
+    return reply
+
+
+if __name__ == '__main__':
+    chat_teaching('{"question":"叽里咕噜", "answer":"叽里咕噜"}')
+
+

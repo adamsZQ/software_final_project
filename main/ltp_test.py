@@ -12,6 +12,12 @@ import re
 uri_base = "http://bbd.8wss.com/ltp"
 
 
+def get_stop_words():
+    f = open('stopwords.txt')
+    stop_words = [w.strip().decode('utf-8') for w in f.read().strip().split('\n')]
+    return set(stop_words)
+
+
 def punctuations_filter(sentence):
     ret = re.sub("[\.\!\?\/_\{\}\[\]\(\),$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+".decode("utf8"), "".decode("utf8"), sentence)
     return ret.strip()

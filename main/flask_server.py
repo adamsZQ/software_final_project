@@ -85,8 +85,9 @@ def fuzzy_matching(question):
 
 
 if __name__ == '__main__':
-    chat_teaching('{"question":"叽里咕噜", "answer":"叽里咕噜"}')
-    reply = fuzzy_matching('叽里咕噜')
-    print "reply is:", reply
-
+    #chat_teaching('{"question":"叽里咕噜", "answer":"叽里咕噜"}')
+    #reply = fuzzy_matching('叽里咕噜')
+    # print "reply is:", reply
+    app.debug=True
+    app.run(host ='0.0.0.0',port = 9898)
 
